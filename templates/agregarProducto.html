@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+    <link rel="stylesheet" href="../static/css/app.css">
+</head>
+<body>
+    <h2>Agregar Producto</h2>
+
+    {% if mensaje_error %}
+    <p style="color: red;">{{ mensaje_error }}</p>
+    {% endif %}
+    <form action="/guardarProducto" method="post" enctype="multipart/form-data"><!-- enctype="multipart/form-data".Esto es necesario cuando hay imagenes -->
+      
+      <p>ID: <input type="text" name="id" /></p>
+      <p>Nombre: <input type="text" name="nombre" /></p>
+      <p>Precio: <input type="text" name="precio" /></p>
+      <p>
+        Categoría:
+        <select name="categoria">
+          <option value="hogar">Hogar</option>
+          <option value="tecnologia">Tecnología</option>
+          <option value="electrodomesticos">Electrodomesticos</option>
+        </select>
+      </p>
+      <p>
+        Foto: <input type="file" name="foto" id="input-foto" accept="image/*" />
+      </p>
+      <div id="preview"></div>
+      <p><input type="submit" value="Guardar Producto" /></p>
+    </form>
+
+    <!-- Mostrar productos registrados en una tabla -->
+    <h2>Productos Registrados</h2>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoría</th>
+          <th>Imagen de Referencia</th>
+          <th>Acciones</th>
+          <!-- Nueva columna para acciones -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos %}
+        <tr>
+          <td>{{ producto.id }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.precio }}</td>
+          <td>{{ producto.categoria }}</td>
+          <td>
+            <img src="{{ producto.foto }}"  alt="Imagen del Producto" style="max-width: 100px" />
+          </td>
+          <td>
+            <form action="{{ url_for('actualizarProducto', id=producto.id) }}" method="get">
+                <input type="submit" value="Editar">
+            </form>
+          </td>
+          <td>
+            <form action="{{ url_for('eliminarProducto') }}" method="post">
+                <input type="hidden" name="id" value="{{ producto.id }}">
+                <input type="submit" value="Eliminar">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Consultar Producto por ID</h2>
+
+    {% if mensaje_error %}
+    <p style="color: red;">{{ mensaje_error }}</p>
+    {% endif %}
+    <form action="/consultarProducto" method="post">
+      
+      <p>ID del Producto: <input type="text" name="id_producto" /></p>
+      <p><input type="submit" value="Consultar" /></p>
+    </form>
+
+    <!-- Mostrar resultado de la consulta -->
+    {% if mensaje %}
+    <div>
+      <p>{{ mensaje }}</p>
+      <!-- Aquí puedes agregar más detalles sobre el producto si lo deseas -->
+    </div>
+    {% endif %}
+
+    <p><a href="/logout">Cerrar sesión</a></p>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Este archivo JS(app.js) es lo que permite mostrar la imagen antes de guardarla -->
+</body>
+
+
+
+
+
+
+ 

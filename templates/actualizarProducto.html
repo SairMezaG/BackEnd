@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
+</head>
+<body>
+    <h2>Editar Producto</h2>
+    <form action="{{ url_for('actualizarProducto', id=producto.id) }}" method="post" enctype="multipart/form-data">
+        <p>Nombre: <input type="text" name="nombre" value="{{ producto.nombre }}"></p>
+        <p>Precio: <input type="text" name="precio" value="{{ producto.precio }}"></p>
+        <p>Categoría:
+            <select name="categoria">
+                <option value="hogar" {% if producto.categoria == 'hogar' %} selected {% endif %}>Hogar</option>
+                <option value="tecnologia" {% if producto.categoria == 'tecnologia' %} selected {% endif %}>Tecnología</option>
+                <option value="electrodomesticos" {% if producto.categoria == 'electrodomesticos' %} selected {% endif %}>Electrodomesticos</option>
+            </select>
+        </p>
+        <p>Imagen: <input type="file" name="imagen"></p>
+        <p><input type="submit" value="Guardar Cambios"></p>
+    </form>
+</body>
+</html>
+
+
+
